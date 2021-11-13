@@ -21,7 +21,7 @@ module.exports = {
                                 data: "Địa chỉ email không tồn tại"
                             });
                         } else {
-                            const jsontoken = sign({ result: result }, "vophucson", {
+                            const jsontoken = sign({ result: result }, "nhom11sql", {
                                 expiresIn: "24h"
                             });
                             res.json({

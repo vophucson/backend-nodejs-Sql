@@ -4,7 +4,7 @@ module.exports = {
         var email = "";
         var password = "";
         if (token) {
-            verify(token, "vophucson", (decoded) => {
+            verify(token, "nhom11sql", (decoded) => {
                 console.log(decoded.result.email);
                 email = decoded.result.email;
                 password = decoded.result.password;

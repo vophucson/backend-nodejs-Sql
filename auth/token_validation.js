@@ -10,7 +10,7 @@ module.exports = {
             if (token) {
                 //jwt.verify(token, secretOrPublicKey, [options, callback])
                 //verify a token symmetric
-                verify(token, "vophucson", (err, decoded) => {
+                verify(token, "nhom11sql", (err, decoded) => {
                     if (err) {
                         res.status(401).json({
                             success: 0,
@@ -51,7 +51,7 @@ module.exports = {
         ) {
             let token = req.headers.authorization.split("Bearer ")[1];
             if (token) {
-                verify(token, "vophucson", (err, decoded) => {
+                verify(token, "nhom11sql", (err, decoded) => {
                     if (err) {
                         res.status(401).json({
                             success: 0,
@@ -84,7 +84,7 @@ module.exports = {
             if (token) {
                 //jwt.verify(token, secretOrPublicKey, [options, callback])
                 //verify a token symmetric
-                verify(token, "vophucson", (err, decoded) => {
+                verify(token, "nhom11sql", (err, decoded) => {
                     if (err) {
                         res.status(401).json({
                             success: 0,
