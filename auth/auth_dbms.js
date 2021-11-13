@@ -37,7 +37,7 @@ module.exports = {
             port: 54526
         };
     },
-    AdminConnection: () => {
+    SysAdminConnection: () => {
         return {
             user: "devbackend",
             password: "nhom11sql",

@@ -54,8 +54,6 @@ GRANT exec ON finishorder to userrole
 GRANT exec ON cancelorder to userrole
 GRANT exec ON getuserbyid to userrole
 GRANT exec ON edituser to userrole
-GRANT exec ON getpasswordbyid to userrole
-GRANT exec ON changepassword to userrole
 GRANT  exec on dangnhap to userrole
 /* role admin */
 exec sp_addrole adminrole

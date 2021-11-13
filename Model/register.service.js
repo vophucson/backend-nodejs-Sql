@@ -1,9 +1,9 @@
 const sql = require("mssql");
-const { RoleConnection, noLoginConnection, AdminConnection } = require("../auth/auth_dbms");
+const { RoleConnection, noLoginConnection, SysAdminConnection } = require("../auth/auth_dbms");
 const config = require("../dbconfig");
 module.exports = {
     ModelRegister: async(data) => {
-        let pool = await sql.connect(AdminConnection());
+        let pool = await sql.connect(SysAdminConnection());
         try {
             let id = await pool.request().query("select MAX(Id) as userid from registration");
             let userid = id.recordsets[0][0]['userid'];
@@ -23,7 +23,7 @@ module.exports = {
 
     },
     checkExist: async(data) => {
-        let pool = await sql.connect(AdminConnection());
+        let pool = await sql.connect(SysAdminConnection());
         try {
             let res1 = await pool.request().input("email", sql.NVarChar(50), data.email).execute('dangkyuseremail');
             if (res1.recordsets[0][0] != undefined) {

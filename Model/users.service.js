@@ -1,5 +1,5 @@
 const sql = require("mssql");
-const { RoleConnection, noLoginConnection, AdminConnection } = require("../auth/auth_dbms");
+const { RoleConnection, noLoginConnection, SysAdminConnection } = require("../auth/auth_dbms");
 const { token } = require("morgan");
 
 module.exports = {
@@ -31,7 +31,7 @@ module.exports = {
         }
     },
     getPassword: async(id) => {
-        let pool = await sql.connect(AdminConnection());
+        let pool = await sql.connect(SysAdminConnection());
         try {
             let res = await pool.request().input('Id', sql.Int, id).execute('getpasswordbyid');
             return res.recordset[0].password;
@@ -42,7 +42,7 @@ module.exports = {
         }
     },
     newPassword: async(id, data) => {
-        let pool = await sql.connect(AdminConnection());
+        let pool = await sql.connect(SysAdminConnection());
         try {
             let res = await pool.request().input('Id', sql.Int, id).
             input('password', sql.NVarChar(100), data).execute('changepassword');
@@ -65,7 +65,7 @@ module.exports = {
         }
     },
     setRoleModel: async(data) => {
-        let pool = await sql.connect(AdminConnection());
+        let pool = await sql.connect(SysAdminConnection());
         try {
             let res = await pool.request().input('Id', sql.Int, data.Id).input('role', sql.NVarChar(50), data.role).execute('setrole');
             return res['rowsAffected'][0];

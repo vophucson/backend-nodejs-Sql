@@ -667,19 +667,21 @@ UPDATE storehouse set quantity = quantity - @orderquantity where productId = @pr
 END
 END
 END
-
-DROP TRIGGER pickup
 CREATE TRIGGER cancel ON orders after UPDATE AS
 BEGIN
-DECLARE @Id varchar(64)
-SELECT @Id = orderId
-from inserted where status = N'Hủy đơn hàng'
-IF  @Id IS NOT NULL
+DECLARE @newstatus nvarchar(50)
+SELECT @newstatus = status
+from inserted 
+IF  @newstatus =  N'Hủy đơn hàng'
 BEGIN
 DECLARE @orderquantity int,@productId int,@productsize decimal(3,1)
 SELECT @productsize =  productSize ,@productId = productId,@orderquantity = quantity   from inserted
 UPDATE storehouse set quantity = quantity + @orderquantity where productId = @productId and productSize = @productsize
+END	
 END
+
+
+DROP TRIGGER pickup
 END
 /* chi duoc pick 1 lan */
 
