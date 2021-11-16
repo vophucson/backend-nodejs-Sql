@@ -33,7 +33,15 @@ CREATE procedure [dbo].[getpassword]
 )  
 AS  
 BEGIN
-SELECT password from registration where email = @email 
+SELECT password from registration where email = @email and (role = 'user' or role = 'shipper')
+END
+CREATE procedure [dbo].[getpasswordadmin]  
+(
+@email nvarchar(50)
+)  
+AS  
+BEGIN
+SELECT password from registration where email = @email and (role = 'admin')
 END
 drop proc getpassword
 /** check trung dang ky**/

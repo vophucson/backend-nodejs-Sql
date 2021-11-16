@@ -27,6 +27,7 @@ GRANT exec on getproductdetail to nologinrole
 GRANT exec on searchproduct to nologinrole
 GRANT select on viewcomment to nologinrole
 GRANT exec on getpassword to nologinrole
+GRANT exec on getpasswordadmin to nologinrole
 /* role userrole */
 exec sp_addrole userrole
 GRANT select on categories to userrole
