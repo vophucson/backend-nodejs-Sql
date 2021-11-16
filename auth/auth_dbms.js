@@ -4,10 +4,12 @@ module.exports = {
         var email = "";
         var password = "";
         if (token) {
-            verify(token, "nhom11sql", (decoded) => {
+            verify(token, "nhom11sql", (err, decoded) => {
                 console.log(decoded.result.email);
-                email = decoded.result.email;
-                password = decoded.result.password;
+                if (err) {} else {
+                    email = decoded.result.email;
+                    password = decoded.result.password;
+                }
             });
         }
         return {

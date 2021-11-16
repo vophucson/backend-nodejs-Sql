@@ -16,8 +16,7 @@ module.exports = {
                     } else {
                         if (decoded.result.role == "admin") {
                             next();
-                        }
-                        else {
+                        } else {
                             res.status(403).json({
                                 success: 2,
                                 message: "Bạn không có quyền sử dụng chức năng này",
@@ -85,8 +84,7 @@ module.exports = {
                     } else {
                         if (decoded.result.role == "shipper") {
                             next();
-                        }
-                        else {
+                        } else {
                             res.status(403).json({
                                 success: 2,
                                 message: "Bạn không có quyền sử dụng chức năng này",

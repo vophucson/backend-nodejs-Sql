@@ -22,7 +22,7 @@ module.exports = {
                             });
                         } else {
                             const jsontoken = sign({ result: result }, "nhom11sql", {
-                                expiresIn: "24h"
+                                expiresIn: "16h"
                             });
                             res.json({
                                 success: 1,
