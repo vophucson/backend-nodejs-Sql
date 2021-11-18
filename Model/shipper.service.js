@@ -38,9 +38,7 @@ module.exports = {
     pickupOrderModel: async(data, token) => {
         let pool = await sql.connect(RoleConnection(token));
         try {
-            let res = await pool.request().input('orderId', sql.VarChar(64), data.orderId).execute('pickuporder');
-            console.log(res);
-            return res.recordset;
+            await pool.request().input('orderId', sql.VarChar(64), data.orderId).execute('pickuporder');
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
@@ -50,8 +48,7 @@ module.exports = {
     finishOrderModel: async(data, token) => {
         let pool = await sql.connect(RoleConnection(token));
         try {
-            let res = await pool.request().input('orderId', sql.VarChar(64), data.orderId).execute('finishorder');
-            return res.recordset;
+            await pool.request().input('orderId', sql.VarChar(64), data.orderId).execute('finishorder');
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
@@ -61,8 +58,8 @@ module.exports = {
     cancelOrderModel: async(data, token) => {
         let pool = await sql.connect(RoleConnection(token));
         try {
-            let res = await pool.request().input('orderId', sql.VarChar(64), data.orderId).execute('cancelorder');
-            return res.recordset;
+            await pool.request().input('orderId', sql.VarChar(64), data.orderId).execute('cancelorder');
+
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {

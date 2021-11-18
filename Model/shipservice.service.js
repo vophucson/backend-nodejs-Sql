@@ -22,14 +22,13 @@ module.exports = {
             } else {
                 id = resId.recordset[0]["id"];
             }
-            let res = await pool
+            await pool
                 .request()
                 .input("Id", sql.Int, id + 1)
                 .input("shipName", sql.NVarChar(50), data.shipName)
                 .input("shipDay", sql.Int, data.shipDay)
                 .input("ShipPrice", sql.Int, data.ShipPrice)
                 .execute("createshipservice");
-            return res;
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
@@ -39,11 +38,11 @@ module.exports = {
     deleteShipServiceModel: async(data, token) => {
         let pool = await sql.connect(RoleConnection(token));
         try {
-            let res = await pool
+            await pool
                 .request()
                 .input("Id", sql.Int, data)
                 .execute("deleteshipservice");
-            return res.recordset;
+
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
@@ -53,14 +52,13 @@ module.exports = {
     updateShipServiceModel: async(data, token) => {
         let pool = await sql.connect(RoleConnection(token));
         try {
-            let res = await pool
+            await pool
                 .request()
                 .input("Id", sql.Int, data.Id)
                 .input("shipName", sql.NVarChar(50), data.shipName)
                 .input("shipDay", sql.Int, data.shipDay)
                 .input("ShipPrice", sql.Int, data.ShipPrice)
                 .execute("updateshipservice");
-            return res.recordset;
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {

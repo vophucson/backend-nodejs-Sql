@@ -17,13 +17,12 @@ module.exports = {
     updateUser: async(data, token) => {
         let pool = await sql.connect(RoleConnection(token));
         try {
-            let res = await pool.request().
+            await pool.request().
             input('username', sql.NVarChar(50), data.username).
             input('phone', sql.NVarChar(50), data.phone).
             input('address', sql.NVarChar(50), data.address).
             input('userimage', sql.Text, data.userimage).
             input('Id', sql.Int, data.Id).execute('edituser');
-            return res.recordset;
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
@@ -44,9 +43,8 @@ module.exports = {
     newPassword: async(id, data) => {
         let pool = await sql.connect(SysAdminConnection());
         try {
-            let res = await pool.request().input('Id', sql.Int, id).
+            await pool.request().input('Id', sql.Int, id).
             input('password', sql.NVarChar(100), data).execute('changepassword');
-            return res.recordset;
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
@@ -67,8 +65,7 @@ module.exports = {
     setRoleModel: async(data) => {
         let pool = await sql.connect(SysAdminConnection());
         try {
-            let res = await pool.request().input('Id', sql.Int, data.Id).input('role', sql.NVarChar(50), data.role).execute('setrole');
-            return res['rowsAffected'][0];
+            await pool.request().input('Id', sql.Int, data.Id).input('role', sql.NVarChar(50), data.role).execute('setrole');
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
@@ -78,8 +75,7 @@ module.exports = {
     deleteUserModel: async(data, token) => {
         let pool = await sql.connect(RoleConnection(token));
         try {
-            let res = await pool.request().input('Id', sql.Int, data).execute('deleteuser');
-            return res['rowsAffected'][0];
+            await pool.request().input('Id', sql.Int, data).execute('deleteuser');
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {

@@ -20,12 +20,10 @@ module.exports = {
         try {
             const body = req.body;
             let token = req.headers.authorization.split("Bearer ")[1];
-            createShipServiceModel(body, token).then((result) => {
-                res.status(201).json({
-                    success: 1,
-                    message: "Thêm dịch vụ giao hàng thành công "
-                });
-
+            createShipServiceModel(body, token);
+            res.status(201).json({
+                success: 1,
+                message: "Thêm dịch vụ giao hàng thành công "
             });
         } catch (err) {
             res.status(401).json({
@@ -38,11 +36,10 @@ module.exports = {
         try {
             const id = req.query.Id;
             let token = req.headers.authorization.split("Bearer ")[1];
-            deleteShipServiceModel(id, token).then((result) => {
-                res.json({
-                    success: 1,
-                    message: "Xóa dịch vụ giao hàng thành công"
-                });
+            deleteShipServiceModel(id, token);
+            res.json({
+                success: 1,
+                message: "Xóa dịch vụ giao hàng thành công"
             });
         } catch (err) {
             res.status(401).json({
@@ -55,11 +52,10 @@ module.exports = {
         try {
             const body = req.body;
             let token = req.headers.authorization.split("Bearer ")[1];
-            updateShipServiceModel(body, token).then((result) => {
-                res.json({
-                    success: 1,
-                    message: "Cập nhật dịch vụ giao hàng thành công"
-                });
+            updateShipServiceModel(body, token);
+            res.json({
+                success: 1,
+                message: "Cập nhật dịch vụ giao hàng thành công"
             });
         } catch (err) {
             res.status(401).json({

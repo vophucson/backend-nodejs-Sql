@@ -6,11 +6,10 @@ module.exports = {
         try {
             const body = req.body;
             let token = req.headers.authorization.split("Bearer ")[1];
-            sendReviewModel(body, token).then((result) => {
-                res.json({
-                    success: 1,
-                    message: "Đánh giá sản phẩm thành công"
-                });
+            sendReviewModel(body, token);
+            res.json({
+                success: 1,
+                message: "Đánh giá sản phẩm thành công"
             });
         } catch (err) {
             res.status(401).json({

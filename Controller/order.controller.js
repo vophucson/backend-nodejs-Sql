@@ -18,11 +18,10 @@ module.exports = {
         try {
             const body = req.body;
             let token = req.headers.authorization.split("Bearer ")[1];
-            addToCartModel(body, token).then((result) => {
-                res.json({
-                    success: 1,
-                    message: "Thêm vào giỏ hàng thành công"
-                });
+            addToCartModel(body, token);
+            res.json({
+                success: 1,
+                message: "Thêm vào giỏ hàng thành công"
             });
         } catch (err) {
             res.status(401).json({
@@ -52,11 +51,10 @@ module.exports = {
         try {
             const body = req.body;
             let token = req.headers.authorization.split("Bearer ")[1];
-            checkOutModel(body, token).then((result) => {
-                res.json({
-                    success: 1,
-                    message: "Cảm ơn bạn đã mua hàng"
-                });
+            checkOutModel(body, token);
+            res.json({
+                success: 1,
+                message: "Cảm ơn bạn đã mua hàng"
             });
         } catch (err) {
             res.status(401).json({
@@ -69,11 +67,10 @@ module.exports = {
         try {
             const id = req.query.orderId;
             let token = req.headers.authorization.split("Bearer ")[1];
-            deleteCartModel(id, token).then((result) => {
-                res.json({
-                    success: 1,
-                    message: "Xóa đơn hàng thành công "
-                });
+            deleteCartModel(id, token);
+            res.json({
+                success: 1,
+                message: "Xóa đơn hàng thành công "
             });
         } catch (err) {
             res.status(401).json({
@@ -150,12 +147,10 @@ module.exports = {
         try {
             const body = req.body;
             let token = req.headers.authorization.split("Bearer ")[1];
-            shipOrderModel(body, token).then((result) => {
-                res.json({
-                    success: 1,
-                    message: "Giao cho shipper thành công"
-                });
-
+            shipOrderModel(body, token);
+            res.json({
+                success: 1,
+                message: "Giao cho shipper thành công"
             });
         } catch (err) {
             res.status(401).json({
@@ -202,18 +197,10 @@ module.exports = {
         try {
             const id = req.query.orderId;
             let token = req.headers.authorization.split("Bearer ")[1];
-            deleteOrderModel(id, token).then((result) => {
-                if (result != 0) {
-                    res.json({
-                        success: 1,
-                        message: "Xóa đơn hàng thành công "
-                    });
-                } else {
-                    res.status(401).json({
-                        success: 0,
-                        message: "Xóa đơn hàng không thành công"
-                    });
-                }
+            deleteOrderModel(id, token);
+            res.json({
+                success: 1,
+                message: "Xóa đơn hàng thành công "
             });
         } catch (err) {
             res.status(401).json({

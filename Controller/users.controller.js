@@ -34,11 +34,10 @@ module.exports = {
         try {
             const body = req.body;
             let token = req.headers.authorization.split("Bearer ")[1];
-            updateUser(body, token).then((result) => {
-                res.status(200).json({
-                    success: 1,
-                    data: "Thay đổi thông tin tài khoản thành công "
-                });
+            updateUser(body, token);
+            res.status(200).json({
+                success: 1,
+                data: "Thay đổi thông tin tài khoản thành công "
             });
         } catch (err) {
             res.status(400).json({
@@ -56,11 +55,10 @@ module.exports = {
                     try {
                         const salt = genSaltSync(10);
                         body.password = hashSync(body.password, salt);
-                        newPassword(body.Id, body.password).then((result) => {
-                            res.status(200).json({
-                                success: 1,
-                                data: "Thay đổi mật khẩu thành công  "
-                            });
+                        newPassword(body.Id, body.password);
+                        res.status(200).json({
+                            success: 1,
+                            data: "Thay đổi mật khẩu thành công  "
                         });
                     } catch (err) {
                         res.status(400).json({
@@ -101,18 +99,10 @@ module.exports = {
     setRoleController: (req, res) => {
         try {
             const body = req.body;
-            setRoleModel(body).then((result) => {
-                if (result != 0) {
-                    res.json({
-                        success: 1,
-                        message: "Thay đổi quền thành công "
-                    });
-                } else {
-                    res.status(401).json({
-                        success: 0,
-                        message: "Thay đổi quền không thành công"
-                    });
-                }
+            setRoleModel(body);
+            res.json({
+                success: 1,
+                message: "Thay đổi quền thành công "
             });
         } catch (err) {
             res.status(400).json({
@@ -125,18 +115,10 @@ module.exports = {
         try {
             const Id = req.query.Id;
             let token = req.headers.authorization.split("Bearer ")[1];
-            deleteUserModel(Id, token).then((result) => {
-                if (result != 0) {
-                    res.json({
-                        success: 1,
-                        message: "Xóa tài khoản thành công"
-                    });
-                } else {
-                    res.status(401).json({
-                        success: 0,
-                        message: "Xóa tài khoản không thành công"
-                    });
-                }
+            deleteUserModel(Id, token);
+            res.json({
+                success: 1,
+                message: "Xóa tài khoản thành công"
             });
         } catch (err) {
             res.status(400).json({

@@ -20,18 +20,10 @@ module.exports = {
         try {
             const body = req.body;
             let token = req.headers.authorization.split("Bearer ")[1];
-            createCategoryModel(body, token).then((result) => {
-                if (result != 0) {
-                    res.json({
-                        success: 1,
-                        message: "Thêm thể loại sản phẩm thành công "
-                    });
-                } else {
-                    res.status(401).json({
-                        success: 0,
-                        message: "Thêm thể loại sản phẩm không thành công"
-                    });
-                }
+            createCategoryModel(body, token);
+            res.json({
+                success: 1,
+                message: "Thêm thương hiệu thành công "
             });
         } catch (err) {
             res.status(401).json({
@@ -44,18 +36,10 @@ module.exports = {
         try {
             const id = req.query.categoryId;
             let token = req.headers.authorization.split("Bearer ")[1];
-            deleteCategoryModel(id, token).then((result) => {
-                if (result != 0) {
-                    res.json({
-                        success: 1,
-                        message: "Xóa thể loại sản phẩm thành công "
-                    });
-                } else {
-                    res.status(401).json({
-                        success: 0,
-                        message: "Xóa thể loại sản phẩm không thành công"
-                    });
-                }
+            deleteCategoryModel(id, token);
+            res.json({
+                success: 1,
+                message: "Xóa thương hiệu thành công "
             });
         } catch (err) {
             res.status(401).json({
@@ -68,18 +52,10 @@ module.exports = {
         try {
             const body = req.body;
             let token = req.headers.authorization.split("Bearer ")[1];
-            updateCategoryModel(body, token).then((result) => {
-                if (result != 0) {
-                    res.json({
-                        success: 1,
-                        message: "Cập nhật thể loại sản phẩm thành công "
-                    });
-                } else {
-                    res.status(401).json({
-                        success: 0,
-                        message: "Cập nhật thể loại sản phẩm không thành công"
-                    });
-                }
+            updateCategoryModel(body, token);
+            res.json({
+                success: 1,
+                message: "Cập nhật thương hiệu thành công "
             });
         } catch (err) {
             res.status(401).json({

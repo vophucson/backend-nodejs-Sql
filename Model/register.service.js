@@ -7,14 +7,13 @@ module.exports = {
         try {
             let id = await pool.request().query("select MAX(Id) as userid from registration");
             let userid = id.recordsets[0][0]['userid'];
-            let res = await pool.request().input("Id", sql.Int, userid + 1).
+            await pool.request().input("Id", sql.Int, userid + 1).
             input("username", sql.NVarChar(50), data.username).
             input("password", sql.NVarChar(100), data.password).
             input("phone", sql.NVarChar(50), data.phone).
             input("email", sql.NVarChar(50), data.email).
             input("address", sql.NVarChar(50), data.address).
             execute("dangky");
-            return res.recordsets;
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {

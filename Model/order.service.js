@@ -17,7 +17,7 @@ module.exports = {
                 .input("quantity", sql.Int, data.quantity)
                 .query("select dbo.tongtien(@productId,@quantity) as total");
             let total = res.recordset[0].total;
-            let res1 = await pool
+            await pool
                 .request()
                 .input("orderId", sql.VarChar(64), orderId)
                 .input("userId", sql.Int, data.userId)
@@ -27,8 +27,6 @@ module.exports = {
                 .input("productSize", sql.Decimal(3, 1), data.productSize)
                 .input("quantity", sql.Int, data.quantity)
                 .execute("addtocart");
-            console.log(res1);
-            return res1.recordset;
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
@@ -65,13 +63,12 @@ module.exports = {
             let month = date_ob.getMonth() + 1;
             let year = date_ob.getFullYear();
             let fullDate = year + "-" + month + "-" + date;
-            res1 = await pool
+            await pool
                 .request()
                 .input("orderId", sql.VarChar(64), data.orderId)
                 .input("expireDate", sql.Date, fullDate)
                 .input("shipPrice", sql.Int, shipPrice)
                 .execute("checkout");
-            return res1.recordset;
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
@@ -81,12 +78,10 @@ module.exports = {
     deleteCartModel: async(orderId, token) => {
         let pool = await sql.connect(RoleConnection(token));
         try {
-            let res = await pool
+            await pool
                 .request()
                 .input("orderId", sql.VarChar(64), orderId)
                 .execute("deletecart");
-            console.log(res.recordset);
-            return res.recordset;
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
@@ -144,13 +139,11 @@ module.exports = {
     shipOrderModel: async(data, token) => {
         let pool = await sql.connect(RoleConnection(token));
         try {
-            let res = await pool
+            await pool
                 .request()
                 .input("shipperId", sql.Int, data.shipperId)
                 .input("orderId", sql.VarChar(64), data.orderId)
                 .execute("shiporder");
-            console.log(res);
-            return res.recordset;
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
@@ -188,8 +181,7 @@ module.exports = {
     deleteOrderModel: async(data, token) => {
         let pool = await sql.connect(RoleConnection(token));
         try {
-            let res = await pool.request().input('orderId', sql.VarChar(64), data).execute('deleteorder');
-            return res['rowsAffected'][0];
+            await pool.request().input('orderId', sql.VarChar(64), data).execute('deleteorder');
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {

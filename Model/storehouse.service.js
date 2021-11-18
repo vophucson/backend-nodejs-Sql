@@ -15,9 +15,8 @@ module.exports = {
     updateQuantityModel: async(data, token) => {
         let pool = await sql.connect(RoleConnection(token));
         try {
-            let res = await pool.request().input('productId', sql.Int, data.productId).input('productSize', sql.Decimal(3, 1), data.productSize).
+            await pool.request().input('productId', sql.Int, data.productId).input('productSize', sql.Decimal(3, 1), data.productSize).
             input('quantity', sql.Int, data.quantity).execute('updatequantity');
-            return res.recordset;
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {

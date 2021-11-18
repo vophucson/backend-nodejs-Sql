@@ -12,9 +12,8 @@ module.exports = {
             } else {
                 id = resId.recordset[0]['id'];
             }
-            let res = await pool.request().input('bannerId', sql.Int, id + 1).input('content', sql.NVarChar(100), data.content).
+            await pool.request().input('bannerId', sql.Int, id + 1).input('content', sql.NVarChar(100), data.content).
             input('bannerImage', sql.Text, data.bannerImage).execute('createbanner');
-            return res;
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
@@ -36,8 +35,7 @@ module.exports = {
     deleteBannerModel: async(data, token) => {
         let pool = await sql.connect(RoleConnection(token));
         try {
-            let res = await pool.request().input('bannerId', sql.Int, data).execute('deletebanner');
-            return res.recordset;
+            await pool.request().input('bannerId', sql.Int, data).execute('deletebanner');
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
@@ -47,9 +45,8 @@ module.exports = {
     updateBannerModel: async(data, token) => {
         let pool = await sql.connect(RoleConnection(token));
         try {
-            let res = await pool.request().input('bannerId', sql.Int, data.bannerId).input('content', sql.NVarChar(100), data.content).
+            await pool.request().input('bannerId', sql.Int, data.bannerId).input('content', sql.NVarChar(100), data.content).
             input('bannerImage', sql.Text, data.bannerImage).execute('updatebanner');
-            return res.recordset;
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {

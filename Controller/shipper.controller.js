@@ -54,12 +54,10 @@ module.exports = {
         try {
             const body = req.body;
             let token = req.headers.authorization.split("Bearer ")[1];
-            pickupOrderModel(body, token).then((result) => {
-
-                res.json({
-                    success: 1,
-                    message: "Lấy hàng thành công"
-                });
+            pickupOrderModel(body, token);
+            res.json({
+                success: 1,
+                message: "Lấy hàng thành công"
             });
         } catch (err) {
             res.status(400).json({
@@ -72,12 +70,10 @@ module.exports = {
         try {
             const body = req.body;
             let token = req.headers.authorization.split("Bearer ")[1];
-            finishOrderModel(body, token).then((result) => {
-
-                res.json({
-                    success: 1,
-                    message: "Giao hàng thành công"
-                });
+            finishOrderModel(body, token);
+            res.json({
+                success: 1,
+                message: "Giao hàng thành công"
             });
         } catch (err) {
             res.status(400).json({
@@ -90,12 +86,10 @@ module.exports = {
         try {
             const body = req.body;
             let token = req.headers.authorization.split("Bearer ")[1];
-            cancelOrderModel(body, token).then((result) => {
-                res.json({
-                    success: 1,
-                    message: "Hủy đơn hàng thành công"
-                });
-
+            cancelOrderModel(body, token);
+            res.json({
+                success: 1,
+                message: "Hủy đơn hàng thành công"
             });
         } catch (err) {
             res.status(400).json({

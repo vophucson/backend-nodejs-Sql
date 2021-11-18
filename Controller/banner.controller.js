@@ -5,13 +5,10 @@ module.exports = {
         try {
             const body = req.body;
             let token = req.headers.authorization.split("Bearer ")[1];
-            createBannerModel(body, token).then((result) => {
-                res.status(201).json({
-                    success: 1,
-                    message: "Thêm quảng cáo thành công "
-                });
-
-
+            createBannerModel(body, token);
+            res.status(201).json({
+                success: 1,
+                message: "Thêm quảng cáo thành công "
             });
         } catch (err) {
             res.status(401).json({
@@ -39,11 +36,10 @@ module.exports = {
         try {
             const id = req.query.bannerId;
             let token = req.headers.authorization.split("Bearer ")[1];
-            deleteBannerModel(id, token).then((result) => {
-                res.json({
-                    success: 1,
-                    message: "Xóa quảng cáo thành công "
-                });
+            deleteBannerModel(id, token);
+            res.json({
+                success: 1,
+                message: "Xóa quảng cáo thành công "
             });
         } catch (err) {
             res.status(401).json({
@@ -56,11 +52,10 @@ module.exports = {
         try {
             const body = req.body;
             let token = req.headers.authorization.split("Bearer ")[1];
-            updateBannerModel(body, token).then((result) => {
-                res.json({
-                    success: 1,
-                    message: "Cập nhật quảng cáo thành công"
-                });
+            updateBannerModel(body, token);
+            res.json({
+                success: 1,
+                message: "Cập nhật quảng cáo thành công"
             });
         } catch (err) {
             res.status(401).json({

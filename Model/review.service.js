@@ -11,10 +11,9 @@ module.exports = {
             let year = date_ob.getFullYear();
             let fullDate = year + "-" + month + "-" + date;
             let reviewId = 'RV' + data.userId + '_' + ts;
-            let res = await pool.request().input('reviewId', sql.VarChar(64), reviewId).
+            await pool.request().input('reviewId', sql.VarChar(64), reviewId).
             input('productId', sql.Int, data.productId).input('star', sql.Int, data.star).
             input('userId', sql.Int, data.userId).input('comment', sql.NText, data.comment).input('dayComment', sql.Date, fullDate).execute('sendreview');
-            return res.recordset;
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {

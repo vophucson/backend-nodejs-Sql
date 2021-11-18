@@ -6,11 +6,10 @@ module.exports = {
             const body = req.body;
             const salt = genSaltSync(10);
             body.password = hashSync(body.password, salt);
-            ModelRegister(body).then((result) => {
-                res.status(201).json({
-                    success: 1,
-                    message: "đăng ký thành công "
-                });
+            ModelRegister(body);
+            res.status(201).json({
+                success: 1,
+                message: "đăng ký thành công "
             });
         } catch (err) {
             res.status(400).json({
@@ -24,8 +23,6 @@ module.exports = {
             const body = req.body;
             console.log(body);
             checkExist(body).then((result) => {
-
-
                 if (result == "2") {
                     res.status(401).json({
                         success: 0,

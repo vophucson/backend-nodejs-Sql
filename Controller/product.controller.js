@@ -68,18 +68,10 @@ module.exports = {
         try {
             const body = req.body;
             let token = req.headers.authorization.split("Bearer ")[1];
-            createProductModel(body, token).then((result) => {
-                if (result != 0) {
-                    res.status(201).json({
-                        success: 1,
-                        message: "Thêm sản phẩm thành công "
-                    });
-                } else {
-                    res.status(401).json({
-                        success: 0,
-                        message: "Thêm sản phẩm không thành công"
-                    });
-                }
+            createProductModel(body, token);
+            res.status(201).json({
+                success: 1,
+                message: "Thêm sản phẩm thành công "
             });
         } catch (err) {
             res.status(401).json({
@@ -92,18 +84,10 @@ module.exports = {
         try {
             const body = req.body;
             let token = req.headers.authorization.split("Bearer ")[1];
-            updateProductModel(body, token).then((result) => {
-                if (result != 0) {
-                    res.json({
-                        success: 1,
-                        message: "Cập nhật sản phẩm thành công "
-                    });
-                } else {
-                    res.status(401).json({
-                        success: 0,
-                        message: "Cập nhật sản phẩm không thành công"
-                    });
-                }
+            updateProductModel(body, token);
+            res.json({
+                success: 1,
+                message: "Cập nhật sản phẩm thành công "
             });
         } catch (err) {
             res.status(401).json({
@@ -116,18 +100,10 @@ module.exports = {
         try {
             const id = req.query.productId;
             let token = req.headers.authorization.split("Bearer ")[1];
-            deleteProductModel(id, token).then((result) => {
-                if (result != 0) {
-                    res.json({
-                        success: 1,
-                        message: "Xóa sản phẩm thành công "
-                    });
-                } else {
-                    res.status(401).json({
-                        success: 0,
-                        message: "Xóa sản phẩm không thành công"
-                    });
-                }
+            deleteProductModel(id, token);
+            res.json({
+                success: 1,
+                message: "Xóa sản phẩm thành công "
             });
         } catch (err) {
             res.status(401).json({
