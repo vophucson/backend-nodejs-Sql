@@ -16,7 +16,6 @@ FOR LOGIN [nologinconnection];
 exec sp_addrolemember nologinrole,'nologinconnection'
 /* role nologin */
 exec sp_addrole nologinrole
-GRANT select on registration to nologinrole
 GRANT select on banner to nologinrole
 GRANT select on categories to nologinrole
 GRANT select on products to nologinrole
