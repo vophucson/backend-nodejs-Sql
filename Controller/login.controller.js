@@ -1,8 +1,6 @@
 const {
     getUserByUserEmail,
     getUserByAdminEmail,
-    getPasswordByEmail,
-    getPasswordAdminByEmail
 } = require("../Model/login.service");
 const { genSaltSync, hashSync, compareSync } = require("bcrypt");
 const { sign } = require("jsonwebtoken");
@@ -11,28 +9,22 @@ module.exports = {
         try {
             const body = req.body;
             console.log(body);
-            getPasswordByEmail(body.email).then((password) => {
-                //    console.log(password);
-                if (password == undefined) {
+            getUserByUserEmail(body.email).then((result) => {
+                if (result == undefined) {
                     return res.status(400).json({
                         success: 0,
                         data: "Địa chỉ email không tồn tại"
                     });
-
                 } else {
-                    const CheckResult = compareSync(body.password, password);
+                    const CheckResult = compareSync(body.password, result.password);
                     if (CheckResult) {
-                        getUserByUserEmail(body.email, password).then((result) => {
-
-                            const jsontoken = sign({ result: result }, "nhom11sql", {
-                                expiresIn: "24h"
-                            });
-                            res.json({
-                                success: 1,
-                                token: jsontoken,
-                                IdUser: Number(result.Id)
-                            });
-
+                        const jsontoken = sign({ result: result }, "nhom11sql", {
+                            expiresIn: "24h"
+                        });
+                        res.json({
+                            success: 1,
+                            token: jsontoken,
+                            IdUser: Number(result.Id)
                         });
                     } else {
                         return res.status(401).json({
@@ -53,28 +45,22 @@ module.exports = {
         try {
             const body = req.body;
             console.log(body);
-            getPasswordAdminByEmail(body.email).then((password) => {
-                //    console.log(password);
-                if (password == undefined) {
+            getUserByAdminEmail(body.email).then((result) => {
+                if (result == undefined) {
                     return res.status(400).json({
                         success: 0,
                         data: "Địa chỉ email không tồn tại"
                     });
-
                 } else {
-                    const CheckResult = compareSync(body.password, password);
+                    const CheckResult = compareSync(body.password, result.password);
                     if (CheckResult) {
-                        getUserByAdminEmail(body.email, password).then((result) => {
-
-                            const jsontoken = sign({ result: result }, "nhom11sql", {
-                                expiresIn: "24h"
-                            });
-                            res.json({
-                                success: 1,
-                                token: jsontoken,
-                                IdUser: Number(result.Id)
-                            });
-
+                        const jsontoken = sign({ result: result }, "nhom11sql", {
+                            expiresIn: "24h"
+                        });
+                        res.json({
+                            success: 1,
+                            token: jsontoken,
+                            IdUser: Number(result.Id)
                         });
                     } else {
                         return res.status(401).json({

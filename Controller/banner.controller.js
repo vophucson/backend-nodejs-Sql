@@ -4,8 +4,7 @@ module.exports = {
     createBannerController: (req, res) => {
         try {
             const body = req.body;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            createBannerModel(body, token);
+            createBannerModel(body);
             res.status(201).json({
                 success: 1,
                 message: "Thêm quảng cáo thành công "
@@ -35,8 +34,8 @@ module.exports = {
     deleteBannerController: (req, res) => {
         try {
             const id = req.query.bannerId;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            deleteBannerModel(id, token);
+
+            deleteBannerModel(id);
             res.json({
                 success: 1,
                 message: "Xóa quảng cáo thành công "
@@ -51,8 +50,7 @@ module.exports = {
     updateBannerController: (req, res) => {
         try {
             const body = req.body;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            updateBannerModel(body, token);
+            updateBannerModel(body);
             res.json({
                 success: 1,
                 message: "Cập nhật quảng cáo thành công"

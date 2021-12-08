@@ -1,32 +1,8 @@
 const sql = require("mssql");
-const { RoleConnection, noLoginConnection, AdminConnection, LoginConnection } = require("../auth/auth_dbms");
+var config = require("../dbconfig");
 module.exports = {
-    getPasswordByEmail: async(email) => {
-        let pool = await sql.connect(noLoginConnection());
-        try {
-            let res = await pool.request().input("email", sql.NVarChar(50), email).execute('getpassword');
-            console.log(res.recordsets[0][0]['password']);
-            return res.recordsets[0][0]['password'];
-        } catch (error) {
-            console.log(" mathus-error :" + error);
-        } finally {
-            await pool.close();
-        }
-    },
-    getPasswordAdminByEmail: async(email) => {
-        let pool = await sql.connect(noLoginConnection());
-        try {
-            let res = await pool.request().input("email", sql.NVarChar(50), email).execute('getpasswordadmin');
-            console.log(res.recordsets[0][0]['password']);
-            return res.recordsets[0][0]['password'];
-        } catch (error) {
-            console.log(" mathus-error :" + error);
-        } finally {
-            await pool.close();
-        }
-    },
-    getUserByUserEmail: async(email, password) => {
-        let pool = await sql.connect(LoginConnection(email, password));
+    getUserByUserEmail: async(email) => {
+        let pool = await sql.connect(config);
         try {
             let res = await pool.request().input("email", sql.NVarChar(50), email).execute('dangnhap');
             console.log(res.recordsets[0][0]);
@@ -34,18 +10,18 @@ module.exports = {
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
-            await pool.close();
+            pool.close();
         }
     },
-    getUserByAdminEmail: async(email, password) => {
-        let pool = await sql.connect(LoginConnection(email, password));
+    getUserByAdminEmail: async(email) => {
+        let pool = await sql.connect(config);
         try {
             let res = await pool.request().input("email", sql.NVarChar(50), email).execute('dangnhapadmin');
             return res.recordsets[0][0];
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
-            await pool.close();
+            pool.close();
         }
     },
 

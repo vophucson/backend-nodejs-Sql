@@ -19,8 +19,8 @@ module.exports = {
     createCategoryController: (req, res) => {
         try {
             const body = req.body;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            createCategoryModel(body, token);
+
+            createCategoryModel(body);
             res.json({
                 success: 1,
                 message: "Thêm thương hiệu thành công "
@@ -35,8 +35,7 @@ module.exports = {
     deleteCategoryController: (req, res) => {
         try {
             const id = req.query.categoryId;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            deleteCategoryModel(id, token);
+            deleteCategoryModel(id);
             res.json({
                 success: 1,
                 message: "Xóa thương hiệu thành công "
@@ -51,8 +50,7 @@ module.exports = {
     updateCategoryController: (req, res) => {
         try {
             const body = req.body;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            updateCategoryModel(body, token);
+            updateCategoryModel(body);
             res.json({
                 success: 1,
                 message: "Cập nhật thương hiệu thành công "

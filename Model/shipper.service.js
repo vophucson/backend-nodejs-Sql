@@ -1,69 +1,69 @@
 const sql = require("mssql");
-const { RoleConnection, noLoginConnection } = require("../auth/auth_dbms");
+var config = require("../dbconfig");
 const { token } = require("morgan");
 module.exports = {
-    getAllShipperModel: async(token) => {
-        let pool = await sql.connect(RoleConnection(token));
+    getAllShipperModel: async() => {
+        let pool = await sql.connect(config);
         try {
             let res = await pool.request().query('select * from viewshipper');
             return res.recordset;
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
-            await pool.close();
+            pool.close();
         }
     },
-    shipperOrderModel: async(shipperId, token) => {
-        let pool = await sql.connect(RoleConnection(token));
+    shipperOrderModel: async(shipperId) => {
+        let pool = await sql.connect(config);
         try {
             let res = await pool.request().input('shipperId', sql.Int, shipperId).execute('shipperoder');
             return res.recordset;
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
-            await pool.close();
+            pool.close();
         }
     },
-    shipperOrderDetailModel: async(orderId, token) => {
-        let pool = await sql.connect(RoleConnection(token));
+    shipperOrderDetailModel: async(orderId) => {
+        let pool = await sql.connect(config);
         try {
             let res = await pool.request().input('orderId', sql.VarChar(64), orderId).execute('shipperoderdetail');
             return res.recordset;
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
-            await pool.close();
+            pool.close();
         }
     },
-    pickupOrderModel: async(data, token) => {
-        let pool = await sql.connect(RoleConnection(token));
+    pickupOrderModel: async(data) => {
+        let pool = await sql.connect(config);
         try {
             await pool.request().input('orderId', sql.VarChar(64), data.orderId).execute('pickuporder');
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
-            await pool.close();
+            pool.close();
         }
     },
-    finishOrderModel: async(data, token) => {
-        let pool = await sql.connect(RoleConnection(token));
+    finishOrderModel: async(data) => {
+        let pool = await sql.connect(config);
         try {
             await pool.request().input('orderId', sql.VarChar(64), data.orderId).execute('finishorder');
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
-            await pool.close();
+            pool.close();
         }
     },
-    cancelOrderModel: async(data, token) => {
-        let pool = await sql.connect(RoleConnection(token));
+    cancelOrderModel: async(data) => {
+        let pool = await sql.connect(config);
         try {
             await pool.request().input('orderId', sql.VarChar(64), data.orderId).execute('cancelorder');
 
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
-            await pool.close();
+            pool.close();
         }
     },
 

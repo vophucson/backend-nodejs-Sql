@@ -1,8 +1,8 @@
 const sql = require("mssql");
-const { RoleConnection, noLoginConnection } = require("../auth/auth_dbms");
+var config = require("../dbconfig");
 module.exports = {
     getAllCategory: async() => {
-        let pool = await sql.connect(noLoginConnection());
+        let pool = await sql.connect(config);
         try {
             let res = await pool.request().query("select * from categories");
             console.log(res.recordset);
@@ -10,11 +10,11 @@ module.exports = {
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
-            await pool.close();
+            pool.close();
         }
     },
-    createCategoryModel: async(data, token) => {
-        let pool = await sql.connect(RoleConnection(token));
+    createCategoryModel: async(data) => {
+        let pool = await sql.connect(config);
         try {
             let resId = await pool.request().query("select MAX(categoryId) as id from categories");
             let id = resId.recordsets[0][0]['id'];
@@ -23,23 +23,23 @@ module.exports = {
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
-            await pool.close();
+            pool.close();
         }
 
     },
-    deleteCategoryModel: async(data, token) => {
-        let pool = await sql.connect(RoleConnection(token));
+    deleteCategoryModel: async(data) => {
+        let pool = await sql.connect(config);
         try {
             await pool.request().input('categoryId', sql.Int, data).execute('deletecategory');
             console.log(res['rowsAffected'][0]);
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
-            await pool.close();
+            pool.close();
         }
     },
-    updateCategoryModel: async(data, token) => {
-        let pool = await sql.connect(RoleConnection(token));
+    updateCategoryModel: async(data) => {
+        let pool = await sql.connect(config);
         try {
             await pool.request().input('categoryId', sql.Int, data.categoryId).
             input('categoryName', sql.VarChar(64), data.categoryName).
@@ -48,7 +48,7 @@ module.exports = {
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
-            await pool.close();
+            pool.close();
         }
     },
 }

@@ -1,8 +1,8 @@
 const sql = require("mssql");
-const { RoleConnection, noLoginConnection } = require("../auth/auth_dbms");
+var config = require("../dbconfig");
 module.exports = {
-    sendReviewModel: async(data, token) => {
-        let pool = await sql.connect(RoleConnection(token));
+    sendReviewModel: async(data) => {
+        let pool = await sql.connect(config);
         try {
             let ts = Date.now();
             let date_ob = new Date(ts + 1 * 24 * 60 * 60 * 1000);
@@ -17,11 +17,11 @@ module.exports = {
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
-            await pool.close();
+            pool.close();
         }
     },
     viewCommentModel: async(productId) => {
-        let pool = await sql.connect(noLoginConnection());
+        let pool = await sql.connect(config);
         try {
 
             let res = await pool.request().input('productId', sql.Int, productId).query('select * from viewcomment(@productId) order by dayComment DESC');
@@ -29,7 +29,7 @@ module.exports = {
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
-            await pool.close();
+            pool.close();
         }
 
     }

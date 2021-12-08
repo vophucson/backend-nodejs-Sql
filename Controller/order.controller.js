@@ -17,8 +17,7 @@ module.exports = {
     addToCartController: (req, res) => {
         try {
             const body = req.body;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            addToCartModel(body, token);
+            addToCartModel(body);
             res.json({
                 success: 1,
                 message: "Thêm vào giỏ hàng thành công"
@@ -33,8 +32,7 @@ module.exports = {
     viewCartController: (req, res) => {
         try {
             const id = req.query.userId;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            viewCartModel(id, token).then((result) => {
+            viewCartModel(id).then((result) => {
                 res.json({
                     success: 1,
                     data: result
@@ -50,8 +48,7 @@ module.exports = {
     checkOutController: (req, res) => {
         try {
             const body = req.body;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            checkOutModel(body, token);
+            checkOutModel(body);
             res.json({
                 success: 1,
                 message: "Cảm ơn bạn đã mua hàng"
@@ -66,8 +63,7 @@ module.exports = {
     deleteCartController: (req, res) => {
         try {
             const id = req.query.orderId;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            deleteCartModel(id, token);
+            deleteCartModel(id);
             res.json({
                 success: 1,
                 message: "Xóa đơn hàng thành công "
@@ -81,8 +77,7 @@ module.exports = {
     },
     viewOrderXlController: (req, res) => {
         try {
-            let token = req.headers.authorization.split("Bearer ")[1];
-            viewOrderXlModel(token).then((result) => {
+            viewOrderXlModel().then((result) => {
                 res.json({
                     success: 1,
                     data: result
@@ -97,8 +92,7 @@ module.exports = {
     },
     viewOrderGhController: (req, res) => {
         try {
-            let token = req.headers.authorization.split("Bearer ")[1];
-            viewOrderGhModel(token).then((result) => {
+            viewOrderGhModel().then((result) => {
                 res.json({
                     success: 1,
                     data: result
@@ -113,8 +107,7 @@ module.exports = {
     },
     viewOrderNhController: (req, res) => {
         try {
-            let token = req.headers.authorization.split("Bearer ")[1];
-            viewOrderNhModel(token).then((result) => {
+            viewOrderNhModel().then((result) => {
                 res.json({
                     success: 1,
                     data: result
@@ -129,8 +122,7 @@ module.exports = {
     },
     viewOrderHuyController: (req, res) => {
         try {
-            let token = req.headers.authorization.split("Bearer ")[1];
-            viewOrderHuyModel(token).then((result) => {
+            viewOrderHuyModel().then((result) => {
                 res.json({
                     success: 1,
                     data: result
@@ -146,8 +138,7 @@ module.exports = {
     shipOrderController: (req, res) => {
         try {
             const body = req.body;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            shipOrderModel(body, token);
+            shipOrderModel(body);
             res.json({
                 success: 1,
                 message: "Giao cho shipper thành công"
@@ -162,8 +153,7 @@ module.exports = {
     orderHistoryController: (req, res) => {
         try {
             const id = req.query.userId;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            orderHistoryModel(id, token).then((result) => {
+            orderHistoryModel(id).then((result) => {
                 res.json({
                     success: 1,
                     data: result
@@ -179,8 +169,7 @@ module.exports = {
     orderHistoryDetailController: (req, res) => {
         try {
             const id = req.query.orderId;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            orderHistoryDetailModel(id, token).then((result) => {
+            orderHistoryDetailModel(id).then((result) => {
                 res.json({
                     success: 1,
                     data: result
@@ -196,8 +185,7 @@ module.exports = {
     deleteOrderController: (req, res) => {
         try {
             const id = req.query.orderId;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            deleteOrderModel(id, token);
+            deleteOrderModel(id);
             res.json({
                 success: 1,
                 message: "Xóa đơn hàng thành công "

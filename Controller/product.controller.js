@@ -67,8 +67,7 @@ module.exports = {
     createProductController: (req, res) => {
         try {
             const body = req.body;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            createProductModel(body, token);
+            createProductModel(body);
             res.status(201).json({
                 success: 1,
                 message: "Thêm sản phẩm thành công "
@@ -83,8 +82,7 @@ module.exports = {
     updateProductController: (req, res) => {
         try {
             const body = req.body;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            updateProductModel(body, token);
+            updateProductModel(body);
             res.json({
                 success: 1,
                 message: "Cập nhật sản phẩm thành công "
@@ -99,8 +97,7 @@ module.exports = {
     deleteProductController: (req, res) => {
         try {
             const id = req.query.productId;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            deleteProductModel(id, token);
+            deleteProductModel(id);
             res.json({
                 success: 1,
                 message: "Xóa sản phẩm thành công "

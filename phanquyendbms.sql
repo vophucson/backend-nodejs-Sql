@@ -54,6 +54,14 @@ GRANT exec ON cancelorder to userrole
 GRANT exec ON getuserbyid to userrole
 GRANT exec ON edituser to userrole
 GRANT  exec on dangnhap to userrole
+GRANT select on review to userrole
+GRANT select on viewallproduct to userrole
+GRANT exec on getproductid to userrole
+GRANT exec on getproductdetail to userrole
+GRANT exec on searchproduct to userrole
+GRANT select on viewcomment to userrole
+GRANT exec on getpassword to userrole
+GRANT exec on getpasswordadmin to userrole
 /* role admin */
 exec sp_addrole adminrole
 GRANT select,update,delete,insert on banner to adminrole
@@ -92,3 +100,11 @@ GRANT select on searchuser to adminrole
 GRANT select on viewuser to adminrole
 GRANT select on viewadmin to adminrole
 GRANT  exec on dangnhapadmin to adminrole
+GRANT select on review to adminrole
+GRANT select on viewallproduct to adminrole
+GRANT exec on getproductid to adminrole
+GRANT exec on getproductdetail to adminrole
+GRANT exec on searchproduct to adminrole
+GRANT select on viewcomment to adminrole
+GRANT exec on getpassword to adminrole
+GRANT exec on getpasswordadmin to adminrole

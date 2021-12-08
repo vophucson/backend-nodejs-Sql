@@ -5,8 +5,7 @@ module.exports = {
     sendReviewController: (req, res) => {
         try {
             const body = req.body;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            sendReviewModel(body, token);
+            sendReviewModel(body);
             res.json({
                 success: 1,
                 message: "Đánh giá sản phẩm thành công"

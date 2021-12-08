@@ -11,20 +11,9 @@ CREATE procedure [dbo].[dangky]
 )  
 AS  
 BEGIN
-declare @sql nvarchar(max)
-set @sql = 'CREATE LOGIN ['+@email+']
-
-WITH PASSWORD = '''+@password+''',
-
-CHECK_POLICY = ON, CHECK_EXPIRATION = OFF,
-
-DEFAULT_DATABASE = shopdb;
-CREATE USER ['+@email+']
-FOR LOGIN ['+@email+'];
-exec sp_addrolemember userrole,['+@email+'];'
-EXEC(@sql);
 insert into registration(Id,username,password,phone,email,role,address) values(@Id,@username, @password, @phone, @email,'user',@address)
 END
+drop proc dangky
 EXEC dangky  23,'sơn võ','123123','09193512808','sonvo1000@gmail.com','quan 10'
 /* kiểm tra password */
 CREATE procedure [dbo].[getpassword]  
@@ -189,11 +178,7 @@ CREATE procedure [dbo].[changepassword]
 )  
 AS  
 BEGIN
-declare @email nvarchar(50)
-declare @sql nvarchar(max)
-set @email = (select email from registration where Id = @Id)
-set @sql = 'ALTER LOGIN ['+@email+'] WITH PASSWORD = '''+@password+''''
-EXEC(@sql);
+
 update registration set password = @password where Id = @Id
 END
 drop proc changepassword
@@ -217,17 +202,16 @@ CREATE procedure [dbo].[addtocart]
 @orderId varchar(64),
 @userId Int,
 @totalPrice Int,
-@orderDate Date,
 @productId Int,
 @productSize decimal(3,1),
 @quantity Int
 )  
 AS  
 BEGIN
-insert into orders(orderId,userId,totalPrice,orderDate,status,productId,productSize,quantity) values (@orderId,@userId,@totalPrice,@orderDate,N'Chưa thanh toán',@productId,@productSize,@quantity)
+insert into orders(orderId,userId,totalPrice,status,productId,productSize,quantity) values (@orderId,@userId,@totalPrice,N'Chưa thanh toán',@productId,@productSize,@quantity)
 END
-EXEC addtocart 6,1,1,'2021-7-8',1,36.5,1
-DROP procedure addtocard
+EXEC addtocart 6,1,1,1,36.5,1
+DROP procedure addtocart
 select productPrice from products where productId = 1
 
 
@@ -259,15 +243,15 @@ EXEC updateship 'MaDH1_1625559614722',2
 CREATE procedure [dbo].[checkout]  
 (
 @orderId varchar(64),
-@expireDate Date,
-@shipPrice Int
+@orderDate Date
 )  
 AS  
 BEGIN
-UPDATE orders set status = N'Đang xử lý',expireDate = @expireDate,totalPrice = totalPrice + @shipPrice where orderId = @orderId
+UPDATE orders set status = N'Đang xử lý',orderDate = @orderDate where orderId = @orderId
 END
 
 EXEC checkout 'MaDH1_1625559499490','2021-7-11',1000
+drop proc checkout
 CREATE procedure [dbo].[deletecart]  
 (
 @orderId varchar(64)
@@ -408,24 +392,7 @@ CREATE procedure [dbo].[setrole]
 )  
 AS  
 BEGIN
-declare @oldrole nvarchar(50)
-declare @email  nvarchar(50)
-set @email = (select email from registration where Id = @Id)
-set @oldrole = (select role from registration where Id = @Id)
-IF @oldrole != @role
-BEGIN
-	IF @oldrole = 'admin' and (@role = 'user' or @role = 'shipper')
-	BEGIN
-	exec sp_droprolemember adminrole,@email
-	exec sp_addrolemember userrole,@email
-	END
-	ELSE
-	BEGIN
-		IF (@oldrole = 'user' or @oldrole = 'shipper') and @role = 'admin'
-		exec sp_droprolemember userrole,@email
-		exec  sp_addrolemember adminrole,@email
-	END
-END
+
 UPDATE registration set role = @role where Id = @Id
 END
 drop proc setrole
@@ -458,43 +425,42 @@ SELECT * from orders where status = N'Hủy đơn hàng'
 drop view dbo.viewxl
 CREATE VIEW viewxl 
 as
-SELECT orderId,username,address,phone,CONVERT(varchar(20),orderDate,103) as orderDate,CONVERT(varchar(20),expireDate,103) as expireDate,totalPrice,productName,imageUrl,productSize,quantity,productPrice,shipName,ShipPrice,shipDay
-from orders,Ship,registration,products where orders.ShipId = Ship.Id  and orders.userId = registration.Id and orders.productId = products.productId and status = N'Đang xử lý'  
+SELECT orderId,username,address,phone,CONVERT(varchar(20),orderDate,103) as orderDate,CONVERT(varchar(20),expireDate,103) as expireDate,totalPrice,productName,imageUrl,productSize,quantity,productPrice
+from orders,registration,products where  orders.userId = registration.Id and orders.productId = products.productId and status = N'Đang xử lý'  
 SELECT * FROM dbo.viewxl
 drop view viewgh
 CREATE VIEW viewgh 
 as
-SELECT orderId,status,registration.username as username,registration.address as address,registration.phone as phone,CONVERT(varchar(20),orderDate,103) as orderDate,CONVERT(varchar(20),expireDate,103) as expireDate,totalPrice,productName,imageUrl,productSize,quantity,productPrice,shipName,ShipPrice,shipDay,shipper.username as shipperName,shipper.phone as shipperPhone
-from orders,Ship,registration,products,registration as shipper where orders.ShipId = Ship.Id  and orders.userId = registration.Id and orders.productId = products.productId  and orders.shipperId = shipper.Id  and (status = N'Đang giao hàng' or status = N'Nhân viên đã lấy hàng và đang đi giao')
+SELECT orderId,status,registration.username as username,registration.address as address,registration.phone as phone,CONVERT(varchar(20),orderDate,103) as orderDate,CONVERT(varchar(20),expireDate,103) as expireDate,totalPrice,productName,imageUrl,productSize,quantity,productPrice,shipper.username as shipperName,shipper.phone as shipperPhone
+from orders,registration,products,registration as shipper where  orders.userId = registration.Id and orders.productId = products.productId  and orders.shipperId = shipper.Id  and (status = N'Đang giao hàng' or status = N'Nhân viên đã lấy hàng và đang đi giao')
 drop view viewhuy
 CREATE VIEW viewnh
 as
-SELECT orderId,status,registration.username as username,registration.address as address,registration.phone as phone,CONVERT(varchar(20),orderDate,103) as orderDate,CONVERT(varchar(20),expireDate,103) as expireDate,totalPrice,productName,imageUrl,productSize,quantity,productPrice,shipName,ShipPrice,shipDay,shipper.username as shipperName,shipper.phone as shipperPhone
-from orders,Ship,registration,products,registration as shipper where orders.ShipId = Ship.Id  and orders.userId = registration.Id and orders.productId = products.productId  and orders.shipperId = shipper.Id  and status = N'Đã nhận hàng'
+SELECT orderId,status,registration.username as username,registration.address as address,registration.phone as phone,CONVERT(varchar(20),orderDate,103) as orderDate,CONVERT(varchar(20),expireDate,103) as expireDate,totalPrice,productName,imageUrl,productSize,quantity,productPrice,shipper.username as shipperName,shipper.phone as shipperPhone
+from orders,registration,products,registration as shipper where orders.userId = registration.Id and orders.productId = products.productId  and orders.shipperId = shipper.Id  and status = N'Đã nhận hàng'
 
 CREATE VIEW viewhuy
 as
-SELECT orderId,status,registration.username as username,registration.address as address,registration.phone as phone,CONVERT(varchar(20),orderDate,103) as orderDate,CONVERT(varchar(20),expireDate,103) as expireDate,totalPrice,productName,imageUrl,productSize,quantity,productPrice,shipName,ShipPrice,shipDay,shipper.username as shipperName,shipper.phone as shipperPhone
-from orders,Ship,registration,products,registration as shipper where orders.ShipId = Ship.Id  and orders.userId = registration.Id and orders.productId = products.productId  and orders.shipperId = shipper.Id  and status = N'Hủy đơn hàng'
+SELECT orderId,status,registration.username as username,registration.address as address,registration.phone as phone,CONVERT(varchar(20),orderDate,103) as orderDate,CONVERT(varchar(20),expireDate,103) as expireDate,totalPrice,productName,imageUrl,productSize,quantity,productPrice,shipper.username as shipperName,shipper.phone as shipperPhone
+from orders,registration,products,registration as shipper where orders.userId = registration.Id and orders.productId = products.productId  and orders.shipperId = shipper.Id  and status = N'Hủy đơn hàng'
 CREATE procedure [dbo].[shiporder]  
 (
 @shipperId Int,
-@orderId varchar(64)
+@orderId varchar(64),
+@expireDate Date
 ) 
 AS  
 BEGIN
-UPDATE orders set status = N'Đang giao hàng',shipperId = @shipperId where orderId = @orderId
+UPDATE orders set status = N'Đang giao hàng',shipperId = @shipperId,expireDate=@expireDate where orderId = @orderId
 END
 EXEC shiporder 1,'MaDH2_1625577856022'
 select * from viewhuy
 CREATE FUNCTION orderhistorydetail (
 		@orderId varchar(64) )
-RETURNS @detail TABLE (orderId varchar(64),productName nvarchar(64),productPrice int,imageUrl text,orderDate varchar(20),expireDate varchar(20),quantity INT,totalPrice INT,status nvarchar(50),productSize decimal(3, 1),shipNane nvarchar(50),shipperName nvarchar(50),phoneShipper nvarchar(50),shipPrice INT,shipAddress nvarchar(50))
+RETURNS @detail TABLE (orderId varchar(64),productName nvarchar(64),productPrice int,imageUrl text,orderDate varchar(20),expireDate varchar(20),quantity INT,totalPrice INT,status nvarchar(50),productSize decimal(3, 1),shipperName nvarchar(50),phoneShipper nvarchar(50),shipAddress nvarchar(50))
 AS
 BEGIN
-DECLARE @Ship INT
 DECLARE @ID varchar(64)
-DECLARE @shipId INT
 DECLARE @shipperId INT
 DECLARE @productName nvarchar(64)
 DECLARE @productPrice INT
@@ -505,34 +471,22 @@ DECLARE @quantity INT
 DECLARE @totalPrice INT
 DECLARE @status nvarchar(50)
 DECLARE @productSize decimal (3,1)
-DECLARE @shipName nvarchar(50)
 DECLARE @shipperName nvarchar(50)
 DECLARE @phoneShipper nvarchar(50)
-DECLARE @shipPrice INT
 DECLARE @shipAddress nvarchar(50)
-SELECT @Ship = ShipId FROM orders where orderId = @orderId
 SELECT @shipperId = shipperId FROM orders where orderId = @orderId
-	IF @Ship IS NULL
-	BEGIN
-		SELECT @ID = orderId,@productName = productName,@productPrice = productPrice,@imageUrl = imageUrl,@orderDate =CONVERT(varchar(20),orderDate,103),@quantity =quantity,@totalPrice =totalPrice,@status =status,@productSize =productSize,@shipAddress = address
-		from orders,products,registration where orders.productId = products.productId and orderId = @orderId and registration.Id = orders.userId
-		INSERT INTO @detail VALUES (@ID,@productName,@productPrice,@imageUrl,@orderDate,NULL,@quantity,@totalPrice,@status,@productSize,NULL,NULL,NULL,NULL,@shipAddress)
-	END
-	ELSE 
-	BEGIN
 		IF @shipperId IS NULL
 		BEGIN
-			SELECT @ID = orderId,@productName = productName,@productPrice = productPrice,@imageUrl = imageUrl,@orderDate =CONVERT(varchar(20),orderDate,103),@quantity =quantity,@totalPrice =totalPrice,@status =status,@productSize =productSize,@expireDate =CONVERT(varchar(20),expireDate,103),@shipName = shipName,@shipPrice =ShipPrice,@shipAddress = address
-			from orders,products,Ship,registration where orders.productId = products.productId and orderId = @orderId and orders.ShipId =Ship.Id and registration.Id = orders.userId
-				INSERT INTO @detail VALUES (@ID,@productName,@productPrice,@imageUrl,@orderDate,@expireDate,@quantity,@totalPrice,@status,@productSize,@shipName,NULL,NULL,@shipPrice,@shipAddress)
+			SELECT @ID = orderId,@productName = productName,@productPrice = productPrice,@imageUrl = imageUrl,@orderDate =CONVERT(varchar(20),orderDate,103),@quantity =quantity,@totalPrice =totalPrice,@status =status,@productSize =productSize,@expireDate =CONVERT(varchar(20),expireDate,103),@shipAddress = address
+			from orders,products,registration where orders.productId = products.productId and orderId = @orderId  and registration.Id = orders.userId
+				INSERT INTO @detail VALUES (@ID,@productName,@productPrice,@imageUrl,@orderDate,@expireDate,@quantity,@totalPrice,@status,@productSize,NULL,NULL,@shipAddress)
 		END
 		ELSE
 		BEGIN
-			SELECT @ID = orderId,@productName = productName,@productPrice = productPrice,@imageUrl = imageUrl,@orderDate =CONVERT(varchar(20),orderDate,103),@quantity =quantity,@totalPrice =totalPrice,@status =status,@productSize =productSize,@expireDate =CONVERT(varchar(20),expireDate,103),@shipName = shipName,@shipPrice =ShipPrice,@shipperName =registration.username,@phoneShipper =registration.phone,@shipAddress = userInfo.address
-			from orders,products,Ship,registration,registration as userInfo where orders.productId = products.productId and orderId = @orderId and orders.ShipId =Ship.Id and orders.shipperId = registration.Id and orders.userId = userInfo.Id
-			INSERT INTO @detail VALUES (@ID,@productName,@productPrice,@imageUrl,@orderDate,@expireDate,@quantity,@totalPrice,@status,@productSize,@shipName,@shipperName,@phoneShipper,@shipPrice,@shipAddress)
+			SELECT @ID = orderId,@productName = productName,@productPrice = productPrice,@imageUrl = imageUrl,@orderDate =CONVERT(varchar(20),orderDate,103),@quantity =quantity,@totalPrice =totalPrice,@status =status,@productSize =productSize,@expireDate =CONVERT(varchar(20),expireDate,103),@shipperName =registration.username,@phoneShipper =registration.phone,@shipAddress = userInfo.address
+			from orders,products,registration,registration as userInfo where orders.productId = products.productId and orderId = @orderId  and orders.shipperId = registration.Id and orders.userId = userInfo.Id
+			INSERT INTO @detail VALUES (@ID,@productName,@productPrice,@imageUrl,@orderDate,@expireDate,@quantity,@totalPrice,@status,@productSize,@shipperName,@phoneShipper,@shipAddress)
 		END
-	END
 RETURN 
 END
 SELECT ShipId FROM orders where orderId = 'MaDH2_1628843768977'
@@ -547,7 +501,7 @@ AS
 BEGIN
 select orderId,productName,productPrice,imageUrl,totalPrice,status,productSize,quantity,CONVERT(varchar(20),orderDate,103) as orderDate
 from orders,products
-where orders.productId = products.productId and userId = @userId
+where orders.productId = products.productId and userId = @userId and status not  like N'Chưa Thanh toán'
 END
 drop procedure orderhistory
 EXEC orderhistory 2

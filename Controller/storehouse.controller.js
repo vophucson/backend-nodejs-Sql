@@ -3,8 +3,7 @@ module.exports = {
     checkQuantityController: (req, res) => {
         try {
             const id = req.query.productId;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            checkQuantityModel(id, token).then((result) => {
+            checkQuantityModel(id).then((result) => {
                 res.json({
                     success: 1,
                     data: result
@@ -20,8 +19,7 @@ module.exports = {
     updateQuantityController: (req, res) => {
         try {
             const body = req.body;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            updateQuantityModel(body, token);
+            updateQuantityModel(body);
             res.json({
                 success: 1,
                 message: "Cập nhật số lượng thành công"

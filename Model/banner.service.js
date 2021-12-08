@@ -1,9 +1,9 @@
 const sql = require("mssql");
-const { RoleConnection, noLoginConnection } = require("../auth/auth_dbms");
+var config = require("../dbconfig");
 module.exports = {
-    createBannerModel: async(data, token) => {
-        console.log(RoleConnection(token));
-        let pool = await sql.connect(RoleConnection(token));
+    createBannerModel: async(data) => {
+        console.log(config);
+        let pool = await sql.connect(config);
         try {
             let id = 0;
             let resId = await pool.request().query("select MAX(bannerId) as id from banner");
@@ -17,40 +17,40 @@ module.exports = {
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
-            await pool.close();
+            pool.close();
         }
 
     },
     AllBannerModel: async() => {
-        let pool = await sql.connect(noLoginConnection());
+        let pool = await sql.connect(config);
         try {
             let res = await pool.request().query("select * from banner");
             return res.recordset;
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
-            await pool.close();
+            pool.close();
         }
     },
-    deleteBannerModel: async(data, token) => {
-        let pool = await sql.connect(RoleConnection(token));
+    deleteBannerModel: async(data) => {
+        let pool = await sql.connect(config);
         try {
             await pool.request().input('bannerId', sql.Int, data).execute('deletebanner');
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
-            await pool.close();
+            pool.close();
         }
     },
-    updateBannerModel: async(data, token) => {
-        let pool = await sql.connect(RoleConnection(token));
+    updateBannerModel: async(data) => {
+        let pool = await sql.connect(config);
         try {
             await pool.request().input('bannerId', sql.Int, data.bannerId).input('content', sql.NVarChar(100), data.content).
             input('bannerImage', sql.Text, data.bannerImage).execute('updatebanner');
         } catch (error) {
             console.log(" mathus-error :" + error);
         } finally {
-            await pool.close();
+            pool.close();
         }
     },
 

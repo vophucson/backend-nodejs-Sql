@@ -2,8 +2,7 @@ const { getAllShipperModel, shipperOrderModel, shipperOrderDetailModel, pickupOr
 module.exports = {
     getAllShipperController: (req, res) => {
         try {
-            let token = req.headers.authorization.split("Bearer ")[1];
-            getAllShipperModel(token).then((result) => {
+            getAllShipperModel().then((result) => {
                 res.json({
                     success: 1,
                     data: result
@@ -19,8 +18,7 @@ module.exports = {
     shipperOrderController: (req, res) => {
         try {
             const id = req.query.shipperId
-            let token = req.headers.authorization.split("Bearer ")[1];
-            shipperOrderModel(id, token).then((result) => {
+            shipperOrderModel(id).then((result) => {
                 res.json({
                     success: 1,
                     data: result
@@ -36,8 +34,7 @@ module.exports = {
     shipperOrderDetailController: (req, res) => {
         try {
             const id = req.query.orderId
-            let token = req.headers.authorization.split("Bearer ")[1];
-            shipperOrderDetailModel(id, token).then((result) => {
+            shipperOrderDetailModel(id).then((result) => {
                 res.json({
                     success: 1,
                     data: result
@@ -53,8 +50,7 @@ module.exports = {
     pickupOrderController: (req, res) => {
         try {
             const body = req.body;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            pickupOrderModel(body, token);
+            pickupOrderModel(body);
             res.json({
                 success: 1,
                 message: "Lấy hàng thành công"
@@ -69,8 +65,7 @@ module.exports = {
     finishOrderController: (req, res) => {
         try {
             const body = req.body;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            finishOrderModel(body, token);
+            finishOrderModel(body);
             res.json({
                 success: 1,
                 message: "Giao hàng thành công"
@@ -85,8 +80,7 @@ module.exports = {
     cancelOrderController: (req, res) => {
         try {
             const body = req.body;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            cancelOrderModel(body, token);
+            cancelOrderModel(body);
             res.json({
                 success: 1,
                 message: "Hủy đơn hàng thành công"

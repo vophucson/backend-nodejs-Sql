@@ -14,7 +14,6 @@ const reviewRouter = require("./routes/review.router");
 const shipperRouter = require("./routes/shipper.router");
 const houseRouter = require("./routes/storehouse.router");
 const bannerRouter = require("./routes/banner.router");
-const shipServiceRouter = require("./routes/shipservice.router");
 var app = express();
 var cors = require('cors');
 // view engine setup
@@ -39,7 +38,6 @@ app.use('/api/review', reviewRouter);
 app.use('/api/shipper', shipperRouter);
 app.use('/api/house', houseRouter);
 app.use('/api/banner', bannerRouter);
-app.use('/api/ship', shipServiceRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
     next(createError(404));

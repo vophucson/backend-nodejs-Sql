@@ -15,9 +15,8 @@ const { genSaltSync, hashSync, compareSync } = require("bcrypt");
 module.exports = {
     getUserById: (req, res) => {
         const id = req.query.id;
-        let token = req.headers.authorization.split("Bearer ")[1];
         try {
-            getUserByUserId(id, token).then((result) => {
+            getUserByUserId(id).then((result) => {
                 res.json({
                     success: 1,
                     data: result
@@ -33,8 +32,7 @@ module.exports = {
     updateUser: (req, res) => {
         try {
             const body = req.body;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            updateUser(body, token);
+            updateUser(body);
             res.status(200).json({
                 success: 1,
                 data: "Thay đổi thông tin tài khoản thành công "
@@ -82,8 +80,7 @@ module.exports = {
     },
     getAllUserController: (req, res) => {
         try {
-            let token = req.headers.authorization.split("Bearer ")[1];
-            getAllUserModel(token).then((result) => {
+            getAllUserModel().then((result) => {
                 res.json({
                     success: 1,
                     data: result
@@ -114,8 +111,7 @@ module.exports = {
     deleteUserController: (req, res) => {
         try {
             const Id = req.query.Id;
-            let token = req.headers.authorization.split("Bearer ")[1];
-            deleteUserModel(Id, token);
+            deleteUserModel(Id);
             res.json({
                 success: 1,
                 message: "Xóa tài khoản thành công"
@@ -131,8 +127,7 @@ module.exports = {
         const name = req.query.username;
         const username = '%' + name + '%';
         try {
-            let token = req.headers.authorization.split("Bearer ")[1];
-            getSearchUserModel(username, token).then((result) => {
+            getSearchUserModel(username).then((result) => {
                 res.json({
                     success: 1,
                     data: result
@@ -147,8 +142,8 @@ module.exports = {
     },
     getUserController: (req, res) => {
         try {
-            let token = req.headers.authorization.split("Bearer ")[1];
-            getUserModel(token).then((result) => {
+
+            getUserModel().then((result) => {
                 res.json({
                     success: 1,
                     data: result
@@ -163,8 +158,8 @@ module.exports = {
     },
     getAdminController: (req, res) => {
         try {
-            let token = req.headers.authorization.split("Bearer ")[1];
-            getAdminModel(token).then((result) => {
+
+            getAdminModel().then((result) => {
                 res.json({
                     success: 1,
                     data: result
@@ -181,8 +176,8 @@ module.exports = {
         try {
             const body = req.body;
             console.log(body)
-            let token = req.headers.authorization.split("Bearer ")[1];
-            checkUpdateModel(body, token).then((result) => {
+
+            checkUpdateModel(body).then((result) => {
                 if (result == 0) {
                     res.status(401).json({
                         success: 0,
